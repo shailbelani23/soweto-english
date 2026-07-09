@@ -9,10 +9,10 @@ export default function JobTrackCard({ track, completedCount, totalCount }) {
   return (
     <button
       onClick={() => navigate('/job-tracks')}
-      className="w-full text-left bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+      className="w-full text-left bg-white rounded-xl p-4 border-2 border-ink-900 shadow-soft active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all"
     >
       <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-xl bg-teal-50 flex items-center justify-center text-2xl flex-shrink-0">
+        <div className="w-12 h-12 rounded-md bg-brand-100 border border-ink-900/15 flex items-center justify-center text-2xl flex-shrink-0">
           {track.emoji}
         </div>
         <div className="flex-1 min-w-0">

@@ -8,7 +8,11 @@ import DailyLesson from './pages/DailyLesson'
 import Interview from './pages/Interview'
 import JobTracks from './pages/JobTracks'
 import Speaking from './pages/Speaking'
+import Simulator from './pages/Simulator'
+import SimulatorPlay from './pages/SimulatorPlay'
+import Certificate from './pages/Certificate'
 import UserNotRegisteredError from './components/ui/UserNotRegisteredError'
+import { LanguageProvider } from './i18n/LanguageContext'
 import { UserProgress } from 'entities/UserProgress'
 
 const router = createBrowserRouter([
@@ -23,6 +27,9 @@ const router = createBrowserRouter([
       { path: 'interview', element: <Interview /> },
       { path: 'job-tracks', element: <JobTracks /> },
       { path: 'speaking', element: <Speaking /> },
+      { path: 'simulator', element: <Simulator /> },
+      { path: 'simulator/:simId', element: <SimulatorPlay /> },
+      { path: 'certificate', element: <Certificate /> },
     ],
   },
 ])
@@ -33,9 +40,13 @@ export default function App() {
     return p.name !== 'Learner' && p.name !== ''
   })
 
-  if (!registered) {
-    return <UserNotRegisteredError onRegister={() => setRegistered(true)} />
-  }
-
-  return <RouterProvider router={router} />
+  return (
+    <LanguageProvider>
+      {registered ? (
+        <RouterProvider router={router} />
+      ) : (
+        <UserNotRegisteredError onRegister={() => setRegistered(true)} />
+      )}
+    </LanguageProvider>
+  )
 }

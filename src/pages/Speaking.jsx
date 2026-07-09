@@ -10,11 +10,12 @@ export default function Speaking() {
         </p>
       </div>
 
-      <div className="bg-violet-50 border border-violet-100 rounded-2xl p-4 mb-5 text-sm text-violet-800">
-        <p className="font-semibold mb-1">How this works</p>
+      <div className="bg-violet-50 border-2 border-violet-200 rounded-xl p-4 mb-5 text-sm text-violet-800">
+        <p className="font-bold mb-1">How this works</p>
         <p className="text-xs leading-relaxed">
-          Read the prompt. Think for 10 seconds. Speak your answer out loud — as if you are in a real interview.
-          You are training your mouth, not just your brain. Tap <strong>Start speaking</strong> to begin, then <strong>Done</strong> when you finish.
+          Read the prompt (or tap the speaker to hear it). Think for 10 seconds, then speak your answer out loud —
+          as if you are in a real interview. The app listens, shows you what it heard, and tells you if your answer
+          was long enough. You are training your mouth, not just your brain.
         </p>
       </div>
 

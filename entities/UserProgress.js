@@ -5,12 +5,22 @@ const defaultProgress = {
   language: 'en',
   completedLessons: [],
   completedInterviews: [],
+  completedSimulations: [],
+  simulationScores: {},
   streakDays: 0,
   lastActiveDate: null,
   totalMinutes: 0,
   jobTrack: 'Hospitality',
   confidenceScores: {},
   quizResults: {},
+}
+
+function bumpStreak(p) {
+  const today = new Date().toDateString()
+  const wasActiveToday = p.lastActiveDate === today
+  const wasActiveYesterday = p.lastActiveDate === new Date(Date.now() - 86400000).toDateString()
+  const streakDays = wasActiveToday ? p.streakDays : wasActiveYesterday ? p.streakDays + 1 : 1
+  return { lastActiveDate: today, streakDays }
 }
 
 function load() {
@@ -79,6 +89,19 @@ export class UserProgress {
     })
   }
 
+  static completeSimulation(simId, score) {
+    const p = load()
+    const prevBest = p.simulationScores?.[simId] ?? 0
+    save({
+      ...p,
+      ...bumpStreak(p),
+      completedSimulations: p.completedSimulations.includes(simId)
+        ? p.completedSimulations
+        : [...p.completedSimulations, simId],
+      simulationScores: { ...p.simulationScores, [simId]: Math.max(prevBest, score) },
+    })
+  }
+
   static saveQuizResult(lessonId, correct) {
     const p = load()
     save({ ...p, quizResults: { ...p.quizResults, [lessonId]: correct } })
@@ -89,12 +112,13 @@ export class UserProgress {
     save({ ...p, confidenceScores: { ...p.confidenceScores, [questionId]: score } })
   }
 
-  static getJobReadiness(totalLessons, totalInterviews) {
+  static getJobReadiness(totalLessons, totalInterviews, totalSimulations = 0) {
     const p = load()
-    if (totalLessons === 0 && totalInterviews === 0) return 0
-    const lessonScore = totalLessons ? (p.completedLessons.length / totalLessons) * 60 : 0
-    const interviewScore = totalInterviews ? (p.completedInterviews.length / totalInterviews) * 40 : 0
-    return Math.round(lessonScore + interviewScore)
+    if (totalLessons === 0 && totalInterviews === 0 && totalSimulations === 0) return 0
+    const lessonScore = totalLessons ? (p.completedLessons.length / totalLessons) * 40 : 0
+    const interviewScore = totalInterviews ? (p.completedInterviews.length / totalInterviews) * 30 : 0
+    const simScore = totalSimulations ? (p.completedSimulations.length / totalSimulations) * 30 : 0
+    return Math.round(lessonScore + interviewScore + simScore)
   }
 
   static getReadinessLabel(pct) {

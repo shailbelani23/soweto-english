@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { ChevronDown, ChevronUp, Lightbulb } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import ConfidenceMeter from './ConfidenceMeter'
+import ListenButton from './ListenButton'
 
 export default function InterviewCard({ question, completed = false, onComplete, onConfidence }) {
   const [expanded, setExpanded] = useState(false)
@@ -39,6 +40,10 @@ export default function InterviewCard({ question, completed = false, onComplete,
 
       {expanded && (
         <div className="px-4 pb-4 space-y-3 border-t border-gray-50 pt-3">
+          <div className="flex items-center gap-2">
+            <ListenButton text={question.question} />
+            <span className="text-xs text-gray-400 font-medium">Hear the question</span>
+          </div>
           <div className="bg-amber-50 rounded-xl p-3 flex gap-2">
             <Lightbulb size={14} className="text-amber-500 flex-shrink-0 mt-0.5" />
             <p className="text-xs text-amber-800">{question.tip}</p>
@@ -53,7 +58,10 @@ export default function InterviewCard({ question, completed = false, onComplete,
             </button>
           ) : (
             <div className="bg-gray-50 rounded-xl p-3">
-              <p className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">Example answer</p>
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Example answer</p>
+                <ListenButton text={question.exampleAnswer} />
+              </div>
               <p className="text-sm text-gray-700 leading-relaxed">{question.exampleAnswer}</p>
             </div>
           )}

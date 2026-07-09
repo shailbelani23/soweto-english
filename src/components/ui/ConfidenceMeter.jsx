@@ -1,16 +1,18 @@
 import { useState } from 'react'
+import { useLanguage } from '@/hooks/useLanguage'
 import { cn } from '@/lib/utils'
 
 const levels = [
-  { score: 1, label: 'Not sure yet', color: 'bg-red-400' },
-  { score: 2, label: 'Getting there', color: 'bg-orange-400' },
-  { score: 3, label: 'Almost ready', color: 'bg-yellow-400' },
-  { score: 4, label: 'Confident', color: 'bg-lime-400' },
-  { score: 5, label: 'Nailed it!', color: 'bg-emerald-500' },
+  { score: 1, emoji: '😟', key: 'confidence.1', color: 'bg-red-100 border-red-400' },
+  { score: 2, emoji: '😕', key: 'confidence.2', color: 'bg-orange-100 border-orange-400' },
+  { score: 3, emoji: '🙂', key: 'confidence.3', color: 'bg-yellow-100 border-yellow-500' },
+  { score: 4, emoji: '😄', key: 'confidence.4', color: 'bg-lime-100 border-lime-500' },
+  { score: 5, emoji: '🌟', key: 'confidence.5', color: 'bg-emerald-100 border-emerald-500' },
 ]
 
 export default function ConfidenceMeter({ questionId, onRate, initialScore }) {
   const [selected, setSelected] = useState(initialScore || null)
+  const { t } = useLanguage()
 
   function handleRate(score) {
     setSelected(score)
@@ -19,27 +21,33 @@ export default function ConfidenceMeter({ questionId, onRate, initialScore }) {
 
   return (
     <div>
-      <p className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
-        How confident do you feel?
+      <p className="text-xs font-bold text-gray-500 mb-2 uppercase tracking-wide">
+        {t('confidence.title')}
       </p>
-      <div className="flex gap-2">
-        {levels.map(({ score, label, color }) => (
+      <div className="grid grid-cols-5 gap-1.5">
+        {levels.map(({ score, emoji, key, color }) => (
           <button
             key={score}
             onClick={() => handleRate(score)}
-            title={label}
             className={cn(
-              'flex-1 h-7 rounded-lg transition-all',
-              selected === score ? color + ' ring-2 ring-offset-1 ring-gray-400' : 'bg-gray-200 hover:bg-gray-300'
+              'flex flex-col items-center gap-1 py-2 px-0.5 rounded-lg border-2 transition-all',
+              selected === score
+                ? color + ' scale-105'
+                : 'bg-white border-ink-900/15 hover:border-ink-900/40'
             )}
-          />
+          >
+            <span className="text-lg leading-none">{emoji}</span>
+            <span
+              className={cn(
+                'text-[9px] font-bold text-center leading-tight',
+                selected === score ? 'text-gray-800' : 'text-gray-500'
+              )}
+            >
+              {t(key)}
+            </span>
+          </button>
         ))}
       </div>
-      {selected && (
-        <p className="text-xs text-center text-gray-500 mt-1.5">
-          {levels.find(l => l.score === selected)?.label}
-        </p>
-      )}
     </div>
   )
 }

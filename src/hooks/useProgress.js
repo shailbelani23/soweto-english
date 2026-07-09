@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { UserProgress } from 'entities/UserProgress'
 import { Lesson } from 'entities/Lesson'
 import { InterviewQuestion } from 'entities/InterviewQuestion'
+import { Simulation } from 'entities/Simulation'
 
 export function useProgress() {
   const [progress, setProgress] = useState(() => UserProgress.get())
@@ -32,7 +33,8 @@ export function useProgress() {
 
   const jobReadiness = UserProgress.getJobReadiness(
     Lesson.getAll().length,
-    InterviewQuestion.getAll().length
+    InterviewQuestion.getAll().length,
+    Simulation.getAll().length
   )
 
   const readinessLabel = UserProgress.getReadinessLabel(jobReadiness)

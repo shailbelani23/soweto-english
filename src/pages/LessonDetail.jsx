@@ -149,7 +149,8 @@ export default function LessonDetail() {
             <QuizCard
               step={step}
               onAnswer={(correct) => {
-                setQuizAnswered(true)
+                // Only a correct answer unlocks the Next/Complete button.
+                setQuizAnswered(correct)
                 saveQuiz(lesson.id, correct)
               }}
             />

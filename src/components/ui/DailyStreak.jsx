@@ -1,10 +1,10 @@
 import { Flame } from 'lucide-react'
 
-export default function DailyStreak({ days }) {
+export default function DailyStreak({ days, label = 'Daily Streak' }) {
   return (
-    <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+    <div className="bg-white rounded-xl p-4 border-2 border-ink-900 shadow-soft">
       <div className="flex items-center justify-between mb-1">
-        <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Daily Streak</span>
+        <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wide">{label}</span>
         <Flame size={18} className={days > 0 ? 'text-orange-400' : 'text-gray-300'} />
       </div>
       <div className="flex items-baseline gap-1">
